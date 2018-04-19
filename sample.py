@@ -1,7 +1,8 @@
 from paken import scan
 
 #samplePass = "?@7"
-samplePass = "???"
+#samplePass = "???"
+samplePass = "heart"
 #samplePass = "??"
 #samplePass = "bb"
 #samplePass = ">??"
@@ -14,6 +15,6 @@ def cocokan(string):
 	else:
 		False
 		
-dppass = scan(3, cocokan)
+dppass = scan(5, cocokan)
 
 print("passwordnya ialah {0}".format(dppass))

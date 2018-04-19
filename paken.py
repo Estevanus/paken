@@ -1,5 +1,9 @@
+#versi 001
+
 import time
 import sqlite3
+
+startValue = "aaa"
 
 includeNumbers = True
 includeSymbols = True
@@ -113,6 +117,36 @@ def getTotalLoop(maxDigit):
 		temp = spa**i
 		h += temp
 	return h
+		
+def stringToIndexL(string):
+	indexL = []
+	for i in string:
+		indexL.append(sumber.index(i))
+	return indexL
+	
+def faktorkan(value, of):
+	h = 0
+	for i in range(value+1):
+		temp = of**i
+		h += temp
+	return h
+	
+def getLoopCountByString(string):
+	indexL = stringToIndexL(string)
+	h = 0
+	pa = len(indexL)
+	ll = []
+	for i in indexL:
+		pa-=1
+		if pa > 0:
+			temp = i * faktorkan(pa, spa)
+			ll.append(temp)
+		else:
+			ll.append(i)
+			
+	for i in ll:
+		h += i
+	return h
 
 def scan(maxDigit, callback):
 	"""
@@ -153,9 +187,3 @@ def scan(maxDigit, callback):
 		return u.hasil
 	else:
 		return False
-		
-def stringToIndexL(string):
-	indexL = []
-	for i in string:
-		indexL.append(sumber.index(i))
-	return indexL
