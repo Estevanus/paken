@@ -1,6 +1,8 @@
 import time
 import sqlite3
 
+includeNumbers = True
+includeSymbols = True
 debugValue = False
 
 huruf = "abcdefghijklmnopqrstuvwxyz "
@@ -13,10 +15,21 @@ for i in huruf:
 	sumber.append(i)
 for i in huruf.upper():
 	sumber.append(i)
-for i in angka:
-	sumber.append(i)
-for i in simbol:
-	sumber.append(i)
+if includeNumbers == True:
+	for i in angka:
+		sumber.append(i)
+if includeSymbols == True:
+	for i in simbol:
+		sumber.append(i)
+		
+endOfSumberIndex = len(sumber) - 1
+endOfSumber = sumber[endOfSumberIndex]
+spa = len(sumber)
+
+	
+'''
+Jumlah looping yang akan terjadi = sumber**maxDigit+sumber
+'''
 	
 
 c = sqlite3.connect("data.oscdb")
@@ -42,6 +55,10 @@ class digit:
 				self.selanjutnya.done = False
 				self.selanjutnya.loop()
 			self.parent.scanned[self.index] = i
+			if i == endOfSumber:
+				if self.selanjutnya != None:
+					self.selanjutnya.done = False
+					self.selanjutnya.loop()
 			if self.akhir == True:
 				self.parent.totalScanned += 1
 				if self.parent.callback(''.join(self.parent.scanned)) == True:
@@ -90,6 +107,12 @@ class utama:
 		self.callback = None
 		self.hasil = ""
 		
+def getTotalLoop(maxDigit):
+	h = 0
+	for i in range(1, maxDigit+1):
+		temp = spa**i
+		h += temp
+	return h
 
 def scan(maxDigit, callback):
 	"""
@@ -118,7 +141,8 @@ def scan(maxDigit, callback):
 		digits.append(dg)
 	dg.akhir = True
 	t = time.time()
-	totalLoop = len(sumber) ** maxDigit
+	#totalLoop = spa ** maxDigit + spa
+	totalLoop = getTotalLoop(maxDigit)
 	u.totalLoop = totalLoop
 	print("total loop ialah " + str(totalLoop))
 	awal.loop()
@@ -129,3 +153,9 @@ def scan(maxDigit, callback):
 		return u.hasil
 	else:
 		return False
+		
+def stringToIndexL(string):
+	indexL = []
+	for i in string:
+		indexL.append(sumber.index(i))
+	return indexL
