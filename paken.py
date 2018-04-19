@@ -92,6 +92,13 @@ class utama:
 		
 
 def scan(maxDigit, callback):
+	"""
+	maxdigit = max number of digit that your going to use
+	callback = a function to equalize the value
+	
+	callback format:
+		callback(string)
+	"""
 	digits = []
 	awal = None
 	seb = None
