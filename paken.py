@@ -3,15 +3,13 @@
 import time
 import sqlite3
 
-startValue = "aaa"
-
 includeNumbers = True
 includeSymbols = True
 debugValue = False
 
 huruf = "abcdefghijklmnopqrstuvwxyz "
 angka = "0123456789"
-simbol = """`~!@#$%^&*()_+[]\{}|;'":,./<>?"""
+simbol = """`~!@#$%^&*()_+[]\\{}|;'":,./<>?"""
 
 
 sumber = []
@@ -49,9 +47,12 @@ class digit:
 		self.sebelumnya = None
 		self.selanjutnya = None
 		self.index = 0
+		self.hasLoaded = True
+		self.i = 0
 		self.done = False
 		
 	def loop(self):
+		'''
 		for i in self.isi:
 			if self.parent.dapat == True:
 				break
@@ -72,6 +73,38 @@ class digit:
 					self.parent.hasil = ''.join(self.parent.scanned)
 				if debugValue == True:
 					print(self.parent.scanned)
+		'''
+		if self.hasLoaded == True:
+			self.i = 0
+		while self.i < spa:
+			if self.parent.dapat == True:
+				break
+			if self.hasLoaded == True:
+				if self.selanjutnya != None:
+					self.selanjutnya.done = False
+					self.selanjutnya.loop()
+			i = sumber[self.i]
+			self.parent.scanned[self.index] = i
+			if self.hasLoaded == False:
+				if self.selanjutnya != None:
+					self.selanjutnya.done = False
+					self.selanjutnya.loop()
+			if i == endOfSumber:
+				if self.selanjutnya != None:
+					self.selanjutnya.done = False
+					self.selanjutnya.loop()
+			if self.akhir == True:
+				self.parent.totalScanned += 1
+				if self.parent.callback(''.join(self.parent.scanned)) == True:
+					#print("password didapati pada putaran ke {0} :3".format(str(self.parent.totalScanned)))
+					print("pasddword didapati")
+					self.parent.dapat = True
+					self.parent.hasil = ''.join(self.parent.scanned)
+				if debugValue == True:
+					print(self.parent.scanned)
+			self.i += 1
+		self.hasLoaded = True
+			
 		if self.parent.firstLoop == True and self.akhir == True and self.parent.totalScanned > patokan:
 			self.parent.firstLoop = False
 			wa = time.time() - self.parent.t
@@ -148,7 +181,7 @@ def getLoopCountByString(string):
 		h += i
 	return h
 
-def scan(maxDigit, callback):
+def scan(maxDigit, callback, startValue=''):
 	"""
 	maxdigit = max number of digit that your going to use
 	callback = a function to equalize the value
@@ -174,6 +207,15 @@ def scan(maxDigit, callback):
 		seb = dg
 		digits.append(dg)
 	dg.akhir = True
+	
+	n = 0
+	pati = maxDigit - len(startValue)
+	for i in startValue:
+		dg = digits[pati+n]
+		dg.hasLoaded = False
+		dg.i = sumber.index(i)
+		n += 1
+	
 	t = time.time()
 	#totalLoop = spa ** maxDigit + spa
 	totalLoop = getTotalLoop(maxDigit)

@@ -8,13 +8,16 @@ samplePass = "heart"
 #samplePass = ">??"
 #samplePass = "777"
 
+
+startValue = "heara"
+
 def cocokan(string):
-	#print(string)
+	print(string)
 	if string == samplePass:
 		return True
 	else:
 		False
 		
-dppass = scan(5, cocokan)
+dppass = scan(5, cocokan, startValue)
 
 print("passwordnya ialah {0}".format(dppass))
